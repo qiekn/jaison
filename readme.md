@@ -38,9 +38,11 @@ you can declare these fields as the generic type `JSON_Value` or `*JSON_Value` a
 
 ```
 Your_Type_To_Parse_Into :: struct {
-	name: string;
-	age: int;
-	something_we_dont_know_much_about: *JSON_Value; // Whatever structure hides in the JSON, it will be parsed into JSON_Value.
+    name: string;
+    age: int;
+
+    // Whatever structure hides in the JSON, it will be parsed into JSON_Value.
+    something_we_dont_know_much_about: *JSON_Value;
 }
 ```
 ## Printing / Serialization
@@ -54,7 +56,3 @@ json_str := json_write_string(my_value);
 where `my_value` is either a `JSON_Value` or any other data structure.
 
 See [`module.jai`](./module.jai) for details and additional parameters.
-
-## Dependencies
-
-This module uses [the `unicode_utils` module](https://github.com/rluba/jai-unicode), which is included as a submodule.
