@@ -235,20 +235,20 @@ generic_parsing :: () {
             case .OBJECT;
                 print("{\n");
                 for node.object {
-                    for 1..(depth+1)*INDENTATION		print(" ");
+                    for 1..(depth+1)*INDENTATION print(" ");
                     print("%: ", it_index);
                     traverse_node(it, depth+1);
                 }
-                for 1..depth*INDENTATION		print(" ");
+                for 1..depth*INDENTATION print(" ");
                 print("}\n");
 
             case .ARRAY;
                 print("[\n");
                 for node.array {
-                    for 1..(depth+1)*INDENTATION		print(" ");
+                    for 1..(depth+1)*INDENTATION print(" ");
                     traverse_node(it, depth + 1);
                 }
-                for 1..depth*INDENTATION		print(" ");
+                for 1..depth*INDENTATION print(" ");
                 print("]\n");
         }
     }
@@ -466,6 +466,6 @@ is_nan :: (value: float) -> bool {
 
 #import "Basic";
 #import "Hash_Table"; // To be able to iterate over node.object
-#import "String"; // For to_upper_copy
-#import "Compiler"; // For Type_Info_Struct_Member
+#import "String";     // For to_upper_copy
+#import "Compiler";   // For Type_Info_Struct_Member
 Hash_Table :: #import "Hash_Table";
