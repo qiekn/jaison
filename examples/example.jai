@@ -1,21 +1,21 @@
 #import, file "../module.jai";
 
 main :: () {
-	{
-		// Use the temporary allocator so we don't have to worry about individually freeing
-		// all the allocations.
-		push_allocator(temp);
+    {
+        // Use the temporary allocator so we don't have to worry about individually freeing
+        // all the allocations.
+        push_allocator(temp);
 
-		typed_parsing();
-		typed_printing();
-		generic_parsing();
-		generic_printing();
+        typed_parsing();
+        typed_printing();
+        generic_parsing();
+        generic_printing();
         rename_by_note();
         custom_rename_procedure();
         decode_into_struct_with_using();
 
         enum_errors();
-	}
+    }
 
     // Since the program ends here, this doesn't matter, but just setting an example.
     reset_temporary_storage();
@@ -190,25 +190,25 @@ generic_parsing :: () {
     // In this scenario, some parts of the structure are known, but other parts are not.
 
     json := #string DONE
-{
-    "version": 3,
-    "entities": [
-        {
-            "name": "Player",
-            "x": 2,
-            "y": 2,
-            "player_index": 0
-        },
-        {
-            "name": "Snake",
-            "x": 4,
-            "y": 4,
-            "snake_color": 1
-        }
-    ],
-    "stuff": [null, true, false]
-}
-DONE
+    {
+        "version": 3,
+        "entities": [
+            {
+                "name": "Player",
+                "x": 2,
+                "y": 2,
+                "player_index": 0
+            },
+            {
+                "name": "Snake",
+                "x": 4,
+                "y": 4,
+                "snake_color": 1
+            }
+        ],
+        "stuff": [null, true, false]
+    }
+    DONE
 
     success, root := json_parse_string(json);
     // success, root := json_parse_file("level.json");
@@ -219,37 +219,37 @@ DONE
     // Print things out, for demonstration purposes
 
     traverse_node :: (node: JSON_Value, depth: int) {
-		INDENTATION :: 4;
+        INDENTATION :: 4;
         print("% ", node.type);
 
         if node.type == {
-        case .NULL;
-            print("\n");
-        case .BOOLEAN;
-            print("%\n", node.boolean);
-        case .NUMBER;
-            print("%\n", node.number);
-        case .STRING;
-            print("%\n", node.str);
+            case .NULL;
+                print("\n");
+            case .BOOLEAN;
+                print("%\n", node.boolean);
+            case .NUMBER;
+                print("%\n", node.number);
+            case .STRING;
+                print("%\n", node.str);
 
-        case .OBJECT;
-            print("{\n");
-            for node.object {
-				for 1..(depth+1)*INDENTATION		print(" ");
-                print("%: ", it_index);
-                traverse_node(it, depth+1);
-            }
-			for 1..depth*INDENTATION		print(" ");
-            print("}\n");
+            case .OBJECT;
+                print("{\n");
+                for node.object {
+                    for 1..(depth+1)*INDENTATION		print(" ");
+                    print("%: ", it_index);
+                    traverse_node(it, depth+1);
+                }
+                for 1..depth*INDENTATION		print(" ");
+                print("}\n");
 
-        case .ARRAY;
-            print("[\n");
-            for node.array {
-				for 1..(depth+1)*INDENTATION		print(" ");
-                traverse_node(it, depth + 1);
-            }
-			for 1..depth*INDENTATION		print(" ");
-            print("]\n");
+            case .ARRAY;
+                print("[\n");
+                for node.array {
+                    for 1..(depth+1)*INDENTATION		print(" ");
+                    traverse_node(it, depth + 1);
+                }
+                for 1..depth*INDENTATION		print(" ");
+                print("]\n");
         }
     }
 
@@ -287,14 +287,14 @@ DONE
         y := get(it, "y", .NUMBER).number / 32;
 
         if entity_name == {
-			case "Player";
-				player_index := cast(int) get(it, "player_index", .NUMBER).number;
-				log("Player with player_index=%\n", player_index);
-			case "Snake";
-				snake_color := cast(int) get(it, "snake_color", .NUMBER).number;
-				log("Snake with snake_color=%\n", snake_color);
-			case;
-				//...
+            case "Player";
+                player_index := cast(int) get(it, "player_index", .NUMBER).number;
+                log("Player with player_index=%\n", player_index);
+            case "Snake";
+                snake_color := cast(int) get(it, "snake_color", .NUMBER).number;
+                log("Snake with snake_color=%\n", snake_color);
+            case;
+                //...
         }
     }
 
@@ -315,7 +315,7 @@ generic_printing :: () {
     }
 
     // Create an array of values
-	temp: [..] JSON_Value;
+    temp: [..] JSON_Value;
     junk := JSON_Value.{type=.STRING, str="junk"};
     array_add(*temp, junk);
     array_add(*temp, junk);
@@ -334,7 +334,7 @@ generic_printing :: () {
     //json_write_file("level.json", root);
 
     // Inf/Nan handling
-	floats: [..] JSON_Value;
+    floats: [..] JSON_Value;
     array_add(*floats, .{type=.NUMBER, number=0.5});
     array_add(*floats, .{type=.NUMBER, number=0h7FFF_FFFF_FFFF_FFFF}); // NaN
     array_add(*floats, .{type=.NUMBER, number=0hFFF0_0000_0000_0001}); // also NaN
@@ -439,7 +439,7 @@ enum_errors :: () {
     // Testing error messages when parsing invalid enum values
     {
         LEVEL_DATA_BROKEN_JSON := #string DONE
-            {"kind": ".VERY_HARD"}
+        {"kind": ".VERY_HARD"}
         DONE;
 
         success, level := json_parse_string(LEVEL_DATA_BROKEN_JSON, LevelData, ignore_unknown=false);
@@ -448,7 +448,7 @@ enum_errors :: () {
 
     {
         LEVEL_DATA_BROKEN_JSON := #string DONE
-            {"flags": "FLAG_A | FLAG_D"}
+        {"flags": "FLAG_A | FLAG_D"}
         DONE;
 
         success, level := json_parse_string(LEVEL_DATA_BROKEN_JSON, LevelData, ignore_unknown=false);
